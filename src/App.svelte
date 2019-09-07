@@ -3,6 +3,11 @@
   import CartItem from './CartItem.svelte';
   import FamilyNode from './FamilyNode.svelte';
 
+  let y;
+
+  $: console.log(y)
+  $: currentTitle = 'My app';
+
   let familyStructure = [
     {
       isParent: true, name: 'Chris', children: [
@@ -26,12 +31,38 @@
       renderedComponent = {cmp: Product, title: "Test Product", id: "p1"};
     }
   }
+
+  function switchTitle() {
+    currentTitle = "A New Title";
+  }
+
+  /*window*/
+  /*document.body*/
 </script>
 
-<button on:click={toggle}>Toggle Display</button>
+<style>
+  div {
+    height: 3000px;
+  }
+</style>
 
-<svelte:component this={renderedComponent.cmp} title={renderedComponent.title} id={renderedComponent.id} />
+<svelte:window bind:scrollY={y} />
+<svelte:head>
+  <title>{currentTitle}</title>
+  <meta>
+  <link rel="stylesheet" href="">
+</svelte:head>
+<!--<svelte:body on:mouseenter/>-->
+<button on:click={switchTitle}>Switch Title</button>
+<!--<svelte:window on:keydown={} />-->
+<div>
 
-{#each familyStructure as familyMember}
-  <FamilyNode member={familyMember} />
-{/each}
+  <button on:click={toggle}>Toggle Display</button>
+
+  <svelte:component this={renderedComponent.cmp} title={renderedComponent.title} id={renderedComponent.id} />
+
+  {#each familyStructure as familyMember}
+    <FamilyNode member={familyMember} />
+  {/each}
+</div>
+
